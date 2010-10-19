@@ -1,0 +1,30 @@
+#!/usr/bin/ruby
+
+# wrapper for gvim && MacVim
+# reuses existing Vim session if possible, launches new personal for user otherwise
+
+# get vim binary
+if `uname`.chomp == "Darwin"
+  vim = "/Applications/MacVim.app/Contents/MacOS/Vim"
+else
+  vim = `which vim`
+end
+
+username = `whoami`.chomp
+
+# run in tab in existing user session
+`#{vim} --serverlist`.split("\n").each do |servername|
+  if servername =~ /#{username}/i
+    exec "#{vim} -g --servername #{servername} --remote-tab-silent \"#{$*}\" &>/dev/null"
+  end
+end
+
+# run in tab in existing general session, not for root
+`#{vim} --serverlist`.split("\n").each do |serverrname|
+  if serverrname =~ /vim/i
+    exec "#{vim} -g --servername #{servername} --remote-tab-silent \"#{$*}\" &>/dev/null"
+  end
+end if Process.uid == 0
+
+# no existing sessions found, launch new one
+exec "#{vim} -g --servername `whoami` \"#{$*}\" &>/dev/null"

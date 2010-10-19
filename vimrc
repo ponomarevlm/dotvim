@@ -99,7 +99,7 @@ map <Leader>b :LustyJuggler<CR>
 let g:loaded_lustyexplorer = "I don't need LustyExplorer"
 
 " Eclim settings
-" <Leader>i imports whatever is needed for current file
+" <Leader>ji imports whatever is needed for current file
 nnoremap <silent> <Leader>ji :JavaImportMissing<cr>
 " <Leader>d opens javadoc for statement in browser
 nnoremap <silent> <Leader>jd :JavaDocSearch -x declarations<cr>
@@ -109,12 +109,13 @@ nnoremap <silent> <Leader><cr> :JavaSearchContext<cr>
 nnoremap <silent> <Leader>jv :Validate<cr>
 " <Leader>jc shows corrections for the current line of java
 nnoremap <silent> <Leader>jc :JavaCorrect<cr>
+" customized searches
 nnoremap <Leader>jsm :exe "JavaSearch -x references -s project -i -p ".expand("<cword>")." -t method"<cr>
 nnoremap <Leader>jsc :exe "JavaSearch -x references -s project -i -p ".expand("<cword>")." -t class"<cr>
 nnoremap <Leader>jsr :exe "JavaSearch -x references -s project -i -p ".expand("<cword>")." -t reference"<cr>
 nnoremap <Leader>jsf :exe "JavaSearch -x references -s project -i -p ".expand("<cword>")." -t field"<cr>
 " 'open' on OSX will open the url in the default browser without issue
-let g:EclimBrowser='chrome'
+let g:EclimBrowser='open'
 let g:EclimJavaSrcValidate=1
 
 " plug CommandT

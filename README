@@ -6,8 +6,12 @@ Create symlinks:
 
     ln -s ~/.vim/vimrc ~/.vimrc
     ln -s ~/.vim/gvimrc ~/.gvimrc
+    ln -s ~/.vim/vimwrap ~/bin/vim
 
 Switch to the `~/.vim` directory, and fetch submodules:
 
     cd ~/.vim && git submodule update --init
-	cd ~/.vim/bundle/command-t/ruby/command-t && ruby extconf.rb && make
+
+Compile native Command-T extension
+
+    cd ~/.vim/bundle/command-t/ruby/command-t && ruby extconf.rb && make
