@@ -12,10 +12,10 @@ if has("gui_macvim")
     set fuoptions=maxvert,maxhorz
 
     " Width of window.
-    set columns=193
+    set columns=270
 
     " Height of window.
-    set lines=51
+    set lines=62
 
     " Don't focus the window when the mouse pointer is moved.
     set nomousefocus

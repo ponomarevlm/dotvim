@@ -24,7 +24,13 @@ runtime! macros/matchit.vim
 
   " Only do this part when compiled with support for autocommands.
 if has("autocmd")
+    
+    au VimEnter * RainbowParenthesesToggle
+    au Syntax * RainbowParenthesesLoadRound
+    au Syntax * RainbowParenthesesLoadSquare
+    au Syntax * RainbowParenthesesLoadBraces
 
+    "au FocusLost * :wa " save all on tabbing out of vim
   " Enable file type detection.
   " Use the default filetype settings, so that mail gets 'tw' set to 72,
   " 'cindent' is on in C files, etc.
@@ -51,7 +57,7 @@ autocmd BufReadPost *
 		\   exe "normal g`\"" |
 		\ endif
 
-		augroup END
+		"augroup END
 
 		else
 
@@ -61,9 +67,10 @@ endif " has("autocmd")
 " end of standard stuff from vim distribution ==================================
 
 " using pathogen. Tim, I love you!
-filetype plugin indent off
-call pathogen#helptags()
-call pathogen#runtime_append_all_bundles()
+filetype off
+"call pathogen#helptags()
+"call pathogen#runtime_append_all_bundles()
+execute pathogen#infect()
 filetype plugin indent on
 
 " Functions ====================================================================
@@ -95,28 +102,9 @@ let g:loaded_netrw       = 1
 let g:loaded_netrwPlugin = 1
 
 " plug lusty
-map <Leader>b :LustyJuggler<CR>
+map <Leader><Space> :LustyJuggler<CR>
 let g:loaded_lustyexplorer = "I don't need LustyExplorer"
 
-" Eclim settings
-" <Leader>ji imports whatever is needed for current file
-nnoremap <silent> <Leader>ji :JavaImportMissing<cr>
-" <Leader>d opens javadoc for statement in browser
-nnoremap <silent> <Leader>jd :JavaDocSearch -x declarations<cr>
-" <Leader><enter> searches context for statement
-nnoremap <silent> <Leader><cr> :JavaSearchContext<cr>
-" <Leader>jv validates current java file
-nnoremap <silent> <Leader>jv :Validate<cr>
-" <Leader>jc shows corrections for the current line of java
-nnoremap <silent> <Leader>jc :JavaCorrect<cr>
-" customized searches
-nnoremap <Leader>jsm :exe "JavaSearch -x references -s project -i -p ".expand("<cword>")." -t method"<cr>
-nnoremap <Leader>jsc :exe "JavaSearch -x references -s project -i -p ".expand("<cword>")." -t class"<cr>
-nnoremap <Leader>jsr :exe "JavaSearch -x references -s project -i -p ".expand("<cword>")." -t reference"<cr>
-nnoremap <Leader>jsf :exe "JavaSearch -x references -s project -i -p ".expand("<cword>")." -t field"<cr>
-" 'open' on OSX will open the url in the default browser without issue
-let g:EclimBrowser='open'
-let g:EclimJavaSrcValidate=1
 
 " plug CommandT
 let g:CommandTMatchWindowAtTop=0
@@ -124,27 +112,27 @@ let g:CommandTMaxHeight=10
 set wildignore+=*.class,*.o,.git,.svn,*.png,*.jpg
 
 " plug TagList
-let Tlist_Ctags_Cmd = "/usr/local/bin/ctags"
-"let Tlist_Show_One_File = 1
-let Tlist_Auto_Highlight_Tag = 1
-let Tlist_File_Fold_Auto_Close = 1
-let Tlist_Auto_Update = 1
-let Tlist_Display_Prototype = 0
-let Tlist_Display_Tag_Scope = 1
-let Tlist_Enable_Fold_Column = 1
-let Tlist_Exit_OnlyWindow =1
-let Tlist_GainFocus_On_ToggleOpen = 1
-let Tlist_Highlight_Tag_On_BufEnter = 0
-let Tlist_Process_File_Always = 0
-let Tlist_Show_Menu = 1
-let Tlist_Sort_Type = "name"
-let Tlist_Use_Right_Window = 1
-let Tlist_Use_SingleClick=1
-let Tlist_Inc_Winwidth=1
-let Tlist_File_Fold_Auto_Close = 1
-set title titlestring=%<%f\ %([%{Tlist_Get_Tagname_By_Line()}]%)
-nmap <silent> <F4> :TlistToggle<CR>
-imap <silent> <F4> <Esc>:TlistToggle<CR>i
+"let Tlist_Ctags_Cmd = "/usr/local/bin/ctags"
+""let Tlist_Show_One_File = 1
+"let Tlist_Auto_Highlight_Tag = 1
+"let Tlist_File_Fold_Auto_Close = 1
+"let Tlist_Auto_Update = 1
+"let Tlist_Display_Prototype = 0
+"let Tlist_Display_Tag_Scope = 1
+"let Tlist_Enable_Fold_Column = 1
+"let Tlist_Exit_OnlyWindow =1
+"let Tlist_GainFocus_On_ToggleOpen = 1
+"let Tlist_Highlight_Tag_On_BufEnter = 0
+"let Tlist_Process_File_Always = 0
+"let Tlist_Show_Menu = 1
+"let Tlist_Sort_Type = "name"
+"let Tlist_Use_Right_Window = 1
+"let Tlist_Use_SingleClick=1
+"let Tlist_Inc_Winwidth=1
+"let Tlist_File_Fold_Auto_Close = 1
+"set title titlestring=%<%f\ %{tagbar#currenttag('[%s] ','')}
+nmap <silent> <F4> :TagbarToggle<CR>
+imap <silent> <F4> <Esc>:TagbarToggle<CR>i
 
 "plug Project
 let g:proj_flags="mst"
@@ -168,7 +156,7 @@ imap <silent> <F3> <Esc>:NERDTreeToggle<CR>i
 " settings =======================================================
 
 " mine customized one, based on desert
-colorscheme desert-px
+colorscheme kalisi
 
 set diffopt=filler,vertical
 " status line format with mapping indicator
@@ -193,10 +181,12 @@ set cmdheight=2
 set shortmess=aoOtTIA
 
 "folding
-set foldcolumn=4
-"set foldmethod=syntax
-set foldlevel=1
-
+set foldenable                  " enable folding
+set foldcolumn=4                " add a fold column
+set foldmethod=marker           " detect triple-{ style fold markers
+set foldlevelstart=99           " start out with everything unfolded
+set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
+                                " which commands trigger auto-unfold
 set background=dark
 
 " redraw rarely
@@ -293,10 +283,10 @@ set autoread
 " terminal's enc
 set termencoding=utf-8
 " all possible file encodings, internal vim's encoding
-set fileencodings=utf-8,cp1251,koi8-r
+set fileencodings=ucs-bom,utf-8,cp1251,koi8-r,utf-16
 set encoding=utf-8
 
-" show modes, abandon buffers without queastions, highlight line with cursor
+" show modes, abandon buffers without questions, highlight line with cursor
 set showmode
 set hidden
 set cursorline
@@ -307,8 +297,8 @@ set undofile
 set undodir="~/.vim/undo"
 
 " This turns off Vim’s crazy default regex characters and makes searches use normal regexes
-nnoremap / /\v
-vnoremap / /\v
+"nnoremap / /\v
+"vnoremap / /\v
 
 " makes it easy to clear out a search
 nnoremap <leader>/ :noh<cr>
@@ -335,8 +325,9 @@ set listchars=tab:▸\ ,eol:¬,trail:-,precedes:<,extends:>
 set modelines=0
 
 " http://nvie.com/posts/how-i-boosted-my-vim/
-set history=1000         " remember more commands and search history
-set undolevels=1000      " use many muchos levels of undo
+set history=1000        " remember more commands and search history
+set undolevels=1000     " use many muchos levels of undo
+set gdefault            " search/replace 'globally' (on a line) by default
 
 " http://writequit.org/blog/?p=195
 " show full completion tags
@@ -344,18 +335,26 @@ set showfulltag
 " do lots of scanning on tab completion
 set complete=.,w,b,u,U,t,i,d
 
+" Conflict markers {{{
+" highlight conflict markers
+match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
+
+" shortcut to jump to next conflict marker
+nnoremap <silent> <leader>c /^\(<\\|=\\|>\)\{7\}\([^=].\+\)\?$<CR>
+" }}}
+
 " keybindings ==================================================================
 
 " edit config
-map <C-F12> :tabnew<Space>~/.vimrc<CR>
+map <C-F12> :tabnew<Space>$MYVIMRC<CR>
 " rebind F1 to Esc to never miss
 inoremap <F1> <ESC>
 nnoremap <F1> <ESC>
 vnoremap <F1> <ESC>
 
-" line numbers
-nmap <F11> :set<Space>number!<CR>
-imap <F11> <Esc>:set<Space>number!<CR>i
+" spell
+
+nmap <F5> ]s
 
 " line wrapping
 nmap <S-F11> :set<Space>wrap!<CR>
@@ -367,8 +366,6 @@ set pastetoggle=<M-F11>
 " Insert mode completions
 imap <C-Tab> <C-N>
 imap <C-Space> <C-N>
-" for eclim
-imap <C-S-Space> <C-X><C-U>
 
 " save
 nmap <F2> :w<CR>
@@ -389,6 +386,7 @@ imap <silent><Home> <C-O><Home>
 "LESS like
 nmap <BS> <C-S-U><C-S-U>
 nmap <Space> <C-S-D><C-S-D>
+
 " exit
 map <F10> :q<CR>
 imap <F10> <ESC>:q<CR>
@@ -421,3 +419,14 @@ nnoremap <C-Left> <C-w>h
 nnoremap <C-Down> <C-w>j
 nnoremap <C-Up> <C-w>k
 nnoremap <C-Right> <C-w>l
+
+" visual last insert
+map gv `[v`]
+"nnoremap <leader>v V`]
+
+
+" comment with Nerd Commenter
+map <D-/> <Leader>c<Space>
+vmap <D-/> <Leader>c<Space>
+imap <D-/> <Esc><Leader>c<Space>i
+nnoremap ; :

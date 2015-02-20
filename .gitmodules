@@ -16,3 +16,24 @@
 [submodule "bundle/lusty"]
 	path = bundle/lusty
 	url = git://github.com/sjbach/lusty.git
+[submodule "bundle/cocoa"]
+	path = bundle/cocoa
+	url = git://github.com/msanders/cocoa.vim.git
+[submodule "bundle/snipmate"]
+	path = bundle/snipmate
+	url = git://github.com/msanders/snipmate.vim.git
+[submodule "bundle/vim-kalisi"]
+	path = bundle/vim-kalisi
+	url = git@github.com:freeo/vim-kalisi.git
+[submodule "bundle/vim-ruby"]
+	path = bundle/vim-ruby
+	url = git@github.com:vim-ruby/vim-ruby.git
+[submodule "bundle/compview"]
+	path = bundle/compview
+	url = git@github.com:vim-scripts/compview.git
+[submodule "bundle/tagbar"]
+	path = bundle/tagbar
+	url = git@github.com:majutsushi/tagbar.git
+[submodule "bundle/YankRing.vim"]
+	path = bundle/YankRing.vim
+	url = git@github.com:vim-scripts/YankRing.vim.git
